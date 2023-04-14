@@ -11,7 +11,7 @@
     var mvLeft = mvUp = mvRight = mvDown = false; // variáveis referentes a movi com valores booleanos
 
     // variavel para definir o tamanho dos blocos
-    var tileSize = 96; // 32px
+    var tileSize = 64; // 32px
 
     // array com as paredes
     var walls = [];
@@ -22,7 +22,7 @@
         y: tileSize + 2,
         width: 28, // largura de 28px
         height: 28,
-        speed: 2 // velocidade do boneco
+        speed: 1.5 // velocidade do boneco
     };
 
     // teremos um array com varios arrays, ou seja, um array de múltiplas dimensões (neste caso, 20x20)
@@ -49,6 +49,9 @@
 		[1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ];
+
+    var T_WIDTH = maze[0].length * tileSize, // retorna o numero de colunas do labirinto * o tamanho da célul
+        T_HEIGHT = maze.length * tileSize;
     
     for(var row in maze){ // p/ cada linha ↴
         for(var col in maze[row]){  // pegar os índices da coluna
@@ -65,6 +68,27 @@
             }
         }
     }
+
+    var cam = {
+        x: 0,
+        y: 0,
+        width: WIDTH,
+        height: HEIGHT,
+        // 4 metodos que estabelecem os limites que o personagem pode se deslocar sem mover a camera
+        innerLeftBoundary: function(){
+            // ate 25% da largura total da camera a esquerda o personagem pode se deslocar sem interferir a camera em relação ao jogo
+            return this.x + (this.width * 0.25);
+        },
+        innerRightBoundary: function(){
+            return this.x + (this.width * 0.75);
+        },
+        innerTopBoundary: function(){
+            return this.y + (this.height * 0.25);
+        },
+        innerBottomBoundary: function(){
+            return this.y + (this.height * 0.75);
+        }
+    };
 
     function blockRectangle(objA, objB){ // player e muro
         // armazena a distancia dos objetos no eixo X -> este calculo retorna o ponto exato do ponto A no tabuleiro
@@ -147,11 +171,29 @@
             var wall = walls[i]; // recebendo o objeto que está sendo referenciado pelo indice i no array de muros
             blockRectangle(player, wall); // pega um muro de cada vez e verifica se esta colidindo
         }
+
+        if(player.x < cam.innerLeftBoundary()){ // se for menor que o limite esquerdo da camera
+            cam.x = player.x - (cam.width * 0.25); // a cam recebe a pos do personagem - 25% da largura da cam
+        }
+        if((player.x + player.width) > cam.innerRightBoundary()){ // se for menor que o limite do direita da camera
+            cam.x = player.x + player.width - (cam.width * 0.75); // a cam recebe a pos do personagem + a largura do personagem - 75% da largura da cam
+        }
+        if(player.y < cam.innerTopBoundary()){ // se for menor que o limite do topo da camera
+            cam.y = player.y - (cam.height * 0.25); // a cam recebe a pos do personagem - 25% da largura da cam
+        }
+        if((player.y + player.height) > cam.innerBottomBoundary()){ // se for menor que o limite de baixo da camera
+            cam.y = player.y + player.height - (cam.height * 0.75); // a cam recebe a pos do personagem + a largura do personagem - 75% da largura da cam
+        }
+
+        // fun que faz com que entre 0 e o limite a direita, respeite o limite da coordenada x
+        cam.x = Math.max(0, Math.min(T_WIDTH - cam.width, cam.x));
+        cam.y = Math.max(0, Math.min(T_HEIGHT - cam.height, cam.y));
     } 
 
     function render(){ // fun para desenhar os elementos na tela
         ctx.clearRect(0, 0, WIDTH, HEIGHT) // limpa a tela nas coordenadas 0 e 0, até a altura e largura total do canvas
         ctx.save(); // pego o contexto deste ponto e salvo na memória
+        ctx.translate(-cam.x, -cam.y); // ajusta a camera co, os padroes definidos
         for(var row in maze){ // p/ cada linha ↴
             for(var col in maze[row]){  // pegar os índices da coluna
                 var tile = maze[row][col];
