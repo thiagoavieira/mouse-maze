@@ -12,6 +12,14 @@
 
     // variavel para definir o tamanho dos blocos
     var tileSize = 64; // 32px
+    var tileSrcSize = 96; // dimensoes de captura da imagem
+
+    var img = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
+        img.src = "img/img-removebg-preview.png";
+        img.addEventListener("load", function(){ // evt de carregamento da img que dispara uma função
+            // jogo só renderiza, depois de carregar as imagens
+            requestAnimationFrame(loop, cnv); // primeira chamada para executar
+        }, false); 
 
     // array com as paredes
     var walls = [];
@@ -20,9 +28,12 @@
     var player = {
         x: tileSize + 2, // 2px para ter uma distância
         y: tileSize + 2,
-        width: 28, // largura de 28px
-        height: 28,
-        speed: 1.5 // velocidade do boneco
+        width: 24, // largura de 28px
+        height: 32,
+        speed: 2, // velocidade do boneco
+        srcX: 0,
+        srcY: tileSrcSize,
+        countAnim: 0 // em qnt em qnt tempo tem q mudar a animacao
     };
 
     // teremos um array com varios arrays, ou seja, um array de múltiplas dimensões (neste caso, 20x20)
@@ -157,13 +168,30 @@
     function update(){ // fun para atualizar os movimentos do jogo
         if(mvLeft && !mvRight){ // verificar o mvLeft se é VERDADEIRO e o mvRight armazenando FALSO, ou seja o personagem vai ser mover a ESQUERDA
             player.x -= player.speed; // coordenada em x vai ser subtraida de x
+            player.srcY = tileSrcSize + player.height * 2;
         } else if (mvRight && !mvLeft){ // caso esteja indo para direita
             player.x += player.speed; //
+            player.srcY = tileSrcSize + player.height * 3;
         }
         if(mvUp && !mvDown){
             player.y -= player.speed;
+            player.srcY = tileSrcSize + player.height * 1;
         } else if (mvDown && !mvUp){
             player.y += player.speed;
+            player.srcY = tileSrcSize + player.height * 0;
+        }
+
+        if(mvLeft || mvRight || mvUp || mvDown){
+            player.countAnim++; // contador da animação
+            // /5 é o valor da frequencia q ta mudando a img, ou seja, + aguarda + tempo
+            // este valor nunca pode passar de 7
+            if(player.countAnim >= 24){
+                player.countAnim = 0;
+            }
+            player.srcX = Math.floor(player.countAnim / 3) * player.width; // 3 * 8 = 24, 5 * 8 = 40;
+        } else {
+            player.srcX = 0;
+            player.countAnim = 0;
         }
 
         // verificar se o personagem está colidindo com as paredes
@@ -197,15 +225,20 @@
         for(var row in maze){ // p/ cada linha ↴
             for(var col in maze[row]){  // pegar os índices da coluna
                 var tile = maze[row][col];
-                if(tile === 1){
-                    var x = col * tileSize; // recebe o valor da col multiplicado por algum valor especifico, (neste caso, 32px) para assim desenhar um gráfico na tela
-                    var y = row * tileSize; // eixo vertical da matriz
-                    ctx.fillRect(x, y, tileSize,tileSize); // fun que desenha um retangulo na tela
-                }
+                var x = col * tileSize; // recebe o valor da col multiplicado por algum valor especifico, (neste caso, 32px) para assim desenhar um gráfico na tela
+                var y = row * tileSize; // eixo vertical da matriz
+                ctx.drawImage(
+                    img,
+                    tile * tileSrcSize, 0, tileSrcSize, tileSrcSize, // se for chao 0, se for parede 96
+                    x, y, tileSize, tileSize
+                );
             }
         }
-        ctx.fillStyle = "#00f";
-        ctx.fillRect(player.x, player.y, player.width, player.height); // 34 em x e y, 28 de altura e largura
+        ctx.drawImage(
+            img,
+            player.srcX, player.srcY, player.width, player.height,
+            player.x, player.y, player.width, player.height
+        );
         ctx.restore(); // volta com todas as propriedades que tinham sido salvas antes das alterações (cor)
     }
     
@@ -215,5 +248,4 @@
 
         requestAnimationFrame(loop, cnv); // chamada recursiva
     }
-    requestAnimationFrame(loop, cnv); // primeira chamada para executar
 }());
