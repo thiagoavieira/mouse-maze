@@ -11,30 +11,50 @@
     var mvLeft = mvUp = mvRight = mvDown = false; // variáveis referentes a movi com valores booleanos
 
     // variavel para definir o tamanho dos blocos
-    var tileSize = 64; // 32px
-    var tileSrcSize = 96; // dimensoes de captura da imagem
+    var tileSize = 164; // 32px
+    var tileSrcSize = 163; // dimensoes de captura da imagem
 
     var img = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
-        img.src = "img/img-removebg-preview.png";
+        img.src = "img/sprite sem queijo sem pixel lava.png";
         img.addEventListener("load", function(){ // evt de carregamento da img que dispara uma função
             // jogo só renderiza, depois de carregar as imagens
             requestAnimationFrame(loop, cnv); // primeira chamada para executar
         }, false); 
+
+    // Template do rato com queijo
+    var imgWithCheese = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
+        imgWithCheese.src = "img/sprite com queijo sem pixel lava.png";
+    
+    // Imagem do queijo
+    var cheeseImg = new Image();
+        cheeseImg.src = "img/Queijo.png";
+
+    // Imagem da toca
+    var tocaImg = new Image();
+        tocaImg.src = "img/toca.png";
+
+    var firstZeroFound = false; // variável para controlar se o primeiro zero foi encontrado
+    var lastZeroRow = -1; // linha com o último zero encontrado (é reutilizado dentro da função de renderização)
+    var lastZeroCol = -1; // coluna com o último zero encontrado (esse aq tb é)
+
+    // variável para rastrear se o jogador está segurando o queijo
+    var temQueijo = false;
 
     // array com as paredes
     var walls = [];
 
     // variaveis do player
     var player = {
-        x: tileSize + 2, // 2px para ter uma distância
-        y: tileSize + 2,
-        width: 24, // largura de 28px
-        height: 32,
-        speed: 2, // velocidade do boneco
+        x: tileSize - 10, // 2px para ter uma distância
+        y: tileSize - 10 ,
+        width: 88.5, // largura de 28px
+        height: 54,
+        speed: 1.5, // velocidade do boneco
         srcX: 0,
         srcY: tileSrcSize,
         countAnim: 0 // em qnt em qnt tempo tem q mudar a animacao
     };
+    
 
     // teremos um array com varios arrays, ou seja, um array de múltiplas dimensões (neste caso, 20x20)
     // deixar um lembrete aqui pra eu mudar o array aleatoriamente
@@ -165,6 +185,33 @@
         }
     }
 
+    // verificar se o jogador está em cima do queijo
+    function verificaQueijo(player, queijo) {
+        if (player.x < queijo.x + queijo.width &&
+            player.x + player.width > queijo.x &&
+            player.y < queijo.y + queijo.height &&
+            player.y + player.height > queijo.y) {
+        // o jogador está em cima do queijo
+        queijo.img = img_queijo_com; // mudar o sprite do queijo para o sprite com o queijo
+        temQueijo = true; // o jogador está segurando o queijo
+        }
+    }
+    
+    // verificar se o jogador está em cima da toca
+    function verificaToca(player, toca) {
+        if (player.x < toca.x + toca.width &&
+            player.x + player.width > toca.x &&
+            player.y < toca.y + toca.height &&
+            player.y + player.height > toca.y) {
+        // o jogador está em cima da toca
+        if (temQueijo) {
+            // o jogador tem o queijo e está em cima da toca
+            alert("Você colocou o queijo na toca!"); // disparar mensagem
+            temQueijo = false; // o jogador não está mais segurando o queijo
+        }
+        }
+    }
+
     function update(){ // fun para atualizar os movimentos do jogo
         if(mvLeft && !mvRight){ // verificar o mvLeft se é VERDADEIRO e o mvRight armazenando FALSO, ou seja o personagem vai ser mover a ESQUERDA
             player.x -= player.speed; // coordenada em x vai ser subtraida de x
@@ -185,10 +232,10 @@
             player.countAnim++; // contador da animação
             // /5 é o valor da frequencia q ta mudando a img, ou seja, + aguarda + tempo
             // este valor nunca pode passar de 7
-            if(player.countAnim >= 24){
+            if(player.countAnim >= 80){
                 player.countAnim = 0;
             }
-            player.srcX = Math.floor(player.countAnim / 3) * player.width; // 3 * 8 = 24, 5 * 8 = 40;
+            player.srcX = Math.floor(player.countAnim / 10) * player.width; // 3 * 8 = 24, 5 * 8 = 40;
         } else {
             player.srcX = 0;
             player.countAnim = 0;
@@ -218,10 +265,14 @@
         cam.y = Math.max(0, Math.min(T_HEIGHT - cam.height, cam.y));
     } 
 
+    //var firstZeroFound = false; // variável para controlar se o primeiro zero foi encontrado
     function render(){ // fun para desenhar os elementos na tela
         ctx.clearRect(0, 0, WIDTH, HEIGHT) // limpa a tela nas coordenadas 0 e 0, até a altura e largura total do canvas
         ctx.save(); // pego o contexto deste ponto e salvo na memória
         ctx.translate(-cam.x, -cam.y); // ajusta a camera co, os padroes definidos
+        firstZeroFound = false; // redefinir a variável antes do loop externo começar
+        lastZeroRow = -1;
+        lastZeroCol = -1;
         for(var row in maze){ // p/ cada linha ↴
             for(var col in maze[row]){  // pegar os índices da coluna
                 var tile = maze[row][col];
@@ -232,7 +283,23 @@
                     tile * tileSrcSize, 0, tileSrcSize, tileSrcSize, // se for chao 0, se for parede 96
                     x, y, tileSize, tileSize
                 );
+                // encontra o último zero na matriz
+                if (tile === 0) {
+                    if (!firstZeroFound) {
+                    ctx.drawImage(tocaImg, x, y, tileSize, tileSize);
+                    firstZeroFound = true;
+                    } else {
+                    lastZeroRow = row;
+                    lastZeroCol = col;
+                    }
+                }
             }
+        }
+        // desenha o queijo na posição encontrada (penultimo array dos 20 e no ultimo 0 encontrado)
+        if (lastZeroRow !== -1 && lastZeroCol !== -1) {
+            var x = lastZeroCol * tileSize;
+            var y = lastZeroRow * tileSize;
+            ctx.drawImage(cheeseImg, x, y, tileSize, tileSize);
         }
         ctx.drawImage(
             img,
