@@ -11,7 +11,7 @@
     var mvLeft = mvUp = mvRight = mvDown = false; // variáveis referentes a movi com valores booleanos
 
     // variavel para definir o tamanho dos blocos
-    var tileSize = 164; // 32px
+    var tileSize = 94; // 32px
     var tileSrcSize = 163; // dimensoes de captura da imagem
 
     var img = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
@@ -37,9 +37,6 @@
     var lastZeroRow = -1; // linha com o último zero encontrado (é reutilizado dentro da função de renderização)
     var lastZeroCol = -1; // coluna com o último zero encontrado (esse aq tb é)
 
-    // variável para rastrear se o jogador está segurando o queijo
-    var temQueijo = false;
-
     // array com as paredes
     var walls = [];
 
@@ -49,12 +46,12 @@
         y: tileSize - 10 ,
         width: 88.5, // largura de 28px
         height: 54,
-        speed: 1.5, // velocidade do boneco
+        speed: 5, // velocidade do boneco
         srcX: 0,
         srcY: tileSrcSize,
-        countAnim: 0 // em qnt em qnt tempo tem q mudar a animacao
+        countAnim: 0, // em qnt em qnt tempo tem q mudar a animacao
+        carryingCheese: false
     };
-    
 
     // teremos um array com varios arrays, ou seja, um array de múltiplas dimensões (neste caso, 20x20)
     // deixar um lembrete aqui pra eu mudar o array aleatoriamente
@@ -80,6 +77,16 @@
 		[1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
 		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     ];
+
+    var tocaPosition = {
+        row: 1,
+        col: 1
+    };
+    
+    var cheesePosition = {
+        row: 18,
+        col: 18
+    };
 
     var T_WIDTH = maze[0].length * tileSize, // retorna o numero de colunas do labirinto * o tamanho da célul
         T_HEIGHT = maze.length * tileSize;
@@ -185,33 +192,6 @@
         }
     }
 
-    // verificar se o jogador está em cima do queijo
-    function verificaQueijo(player, queijo) {
-        if (player.x < queijo.x + queijo.width &&
-            player.x + player.width > queijo.x &&
-            player.y < queijo.y + queijo.height &&
-            player.y + player.height > queijo.y) {
-        // o jogador está em cima do queijo
-        queijo.img = img_queijo_com; // mudar o sprite do queijo para o sprite com o queijo
-        temQueijo = true; // o jogador está segurando o queijo
-        }
-    }
-    
-    // verificar se o jogador está em cima da toca
-    function verificaToca(player, toca) {
-        if (player.x < toca.x + toca.width &&
-            player.x + player.width > toca.x &&
-            player.y < toca.y + toca.height &&
-            player.y + player.height > toca.y) {
-        // o jogador está em cima da toca
-        if (temQueijo) {
-            // o jogador tem o queijo e está em cima da toca
-            alert("Você colocou o queijo na toca!"); // disparar mensagem
-            temQueijo = false; // o jogador não está mais segurando o queijo
-        }
-        }
-    }
-
     function update(){ // fun para atualizar os movimentos do jogo
         if(mvLeft && !mvRight){ // verificar o mvLeft se é VERDADEIRO e o mvRight armazenando FALSO, ou seja o personagem vai ser mover a ESQUERDA
             player.x -= player.speed; // coordenada em x vai ser subtraida de x
@@ -273,13 +253,16 @@
         firstZeroFound = false; // redefinir a variável antes do loop externo começar
         lastZeroRow = -1;
         lastZeroCol = -1;
+
+        var playerRow = Math.floor(player.y / tileSize);
+        var playerCol = Math.floor(player.x / tileSize);
         for(var row in maze){ // p/ cada linha ↴
             for(var col in maze[row]){  // pegar os índices da coluna
                 var tile = maze[row][col];
                 var x = col * tileSize; // recebe o valor da col multiplicado por algum valor especifico, (neste caso, 32px) para assim desenhar um gráfico na tela
                 var y = row * tileSize; // eixo vertical da matriz
                 ctx.drawImage(
-                    img,
+                    player.carryingCheese ? imgWithCheese : img,
                     tile * tileSrcSize, 0, tileSrcSize, tileSrcSize, // se for chao 0, se for parede 96
                     x, y, tileSize, tileSize
                 );
@@ -302,10 +285,21 @@
             ctx.drawImage(cheeseImg, x, y, tileSize, tileSize);
         }
         ctx.drawImage(
-            img,
+            player.carryingCheese ? imgWithCheese : img,
             player.srcX, player.srcY, player.width, player.height,
             player.x, player.y, player.width, player.height
         );
+        if (playerRow === 18 && playerCol === 18) {
+            player.carryingCheese = true;
+            console.log("Você pegou o queijo!");
+        }
+        if (playerRow === 1 && playerCol === 1) {
+            if (player.carryingCheese) {
+                alert("Parabéns, você venceu!");
+            } else {
+                console.log("Você precisa pegar o queijo antes de voltar para a toca.");
+            }
+        }
         ctx.restore(); // volta com todas as propriedades que tinham sido salvas antes das alterações (cor)
     }
     
