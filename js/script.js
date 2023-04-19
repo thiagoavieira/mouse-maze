@@ -1,7 +1,17 @@
+var jogoIniciado = false;
+function iniciarJogo(){
+    jogoIniciado = true;
+}
+
+var score = 0;
+
 // Executada automaticamente e mantém tdas as var locais (evita conflito de memória)
 (function(){
+    // Ativar movimento das teclas
     var cnv = document.querySelector("canvas");
     var ctx = cnv.getContext("2d");
+
+    cnv.setA
 
     // variaveis para limpar a tela
     var WIDTH = cnv.width, HEIGHT = cnv.height;
@@ -12,10 +22,10 @@
 
     // variavel para definir o tamanho dos blocos
     var tileSize = 94; // 32px
-    var tileSrcSize = 163; // dimensoes de captura da imagem
+    var tileSrcSize = 162; // dimensoes de captura da imagem
 
     var img = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
-        img.src = "img/sprite sem queijo sem pixel lava.png";
+        img.src = "img/novo conju sem queijo.png";
         img.addEventListener("load", function(){ // evt de carregamento da img que dispara uma função
             // jogo só renderiza, depois de carregar as imagens
             requestAnimationFrame(loop, cnv); // primeira chamada para executar
@@ -23,7 +33,7 @@
 
     // Template do rato com queijo
     var imgWithCheese = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
-        imgWithCheese.src = "img/sprite com queijo sem pixel lava.png";
+        imgWithCheese.src = "img/novo conju com queijo.png";
     
     // Imagem do queijo
     var cheeseImg = new Image();
@@ -44,8 +54,8 @@
     var player = {
         x: tileSize - 10, // 2px para ter uma distância
         y: tileSize - 10 ,
-        width: 88.5, // largura de 28px
-        height: 54,
+        width: 72, // largura de 28px
+        height: 55,
         speed: 5, // velocidade do boneco
         srcX: 0,
         srcY: tileSrcSize,
@@ -157,6 +167,9 @@
     window.addEventListener("keyup", keyupHandler, false); // evento para quando soltar alguma tecla, que dispara uma função
     
     function keydownHandler(e){
+        if(jogoIniciado === false){
+            return;
+        }
         var key = e.keyCode; // recebe o código da tecla que foi pressionada que disparou o evt
         switch(key){ // switch case padrão do evt, trocando o valor bool
             case LEFT:
@@ -175,6 +188,9 @@
     }
 
     function keyupHandler(e){
+        if(jogoIniciado === false){
+            return;
+        }
         var key = e.keyCode; // recebe o código da tecla que foi despressionada que disparou o evt
         switch(key){ // switch case padrão do evt, trocando novamente o valor bool
             case LEFT:
@@ -295,7 +311,9 @@
         }
         if (playerRow === 1 && playerCol === 1) {
             if (player.carryingCheese) {
+                score += 100;
                 alert("Parabéns, você venceu!");
+                player.carryingCheese = false;
             } else {
                 console.log("Você precisa pegar o queijo antes de voltar para a toca.");
             }
@@ -309,4 +327,31 @@
 
         requestAnimationFrame(loop, cnv); // chamada recursiva
     }
+
+    /* Depois irei fazer uma atualização com timer
+    const countdown = () => {
+        const now = new Date().getTime();
+        const countDate = new Date(now + 3 * 60 * 1000);
+        const remainingTime = countDate - now;
+    
+        const millisecond = second * 1000;
+        const second = minute * 60;
+        const minute = second * 60;
+        const hour = minute * 60;
+    
+        const textMinute = Math.floor((remainingTime % hour) / minute);
+        const textSecond = Math.floor((remainingTime % minute) / second);
+        const textMilliSecond = Math.floor((remainingTime % second) / millisecond);
+    
+        document.querySelector(".minute").innerText = textMinute > 0 ? textMinute : 0;
+        document.querySelector(".second").innerText = textSecond > 0 ? textSecond : 0;
+        document.querySelector(".millisecond").innerText = textMilliSecond > 0 ? textMilliSecond : 0;
+    };
+    
+    const startButton = document.getElementById('startGame');
+    
+    startButton.addEventListener('click', function() {
+      countdown();
+    });
+    */
 }());

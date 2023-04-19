@@ -1,0 +1,127 @@
+.container {
+    width: 100%;
+}
+  
+.box {
+    float: left;
+    width: 45%;
+    height: 100px;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 0.4em;
+    background-color: #344454;
+    border-radius: 25px;
+    transition: .4s ease-in-out;
+}
+  
+.form:hover {
+    transform: scale(1.05);
+    border: 1px solid black;
+}
+  
+#heading {
+    text-align: center;
+    margin: 2em;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+}
+
+/* EM BREVE
+.countdown {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.minute,
+.second,
+.millisecond {
+    font-size: 1rem;
+}
+*/
+  
+.field {
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    gap: 0.5em;
+    border-radius: 25px;
+    margin-right: 5em;
+    margin-left: 5em;
+    padding: 0.6em;
+    padding-left: 2em;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: #171717;
+    box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+}
+  
+.form .btn {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 2.5em;
+}
+  
+.button1 {
+    padding: 0.5em;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+    border-radius: 5px;
+    margin-right: 0.5em;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+  
+.button1:hover {
+    background-color: black;
+    color: white;
+}
+  
+.button2 {
+    padding: 0.5em;
+    padding-left: 2.3em;
+    padding-right: 2.3em;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+  
+.button2:hover {
+    background-color: black;
+    color: white;
+}
+  
+.start {
+    margin-top: 2em;
+    margin-bottom: 3em;
+    padding: 0.5em;
+    margin-left: 6em;
+    margin-right: 6em;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    transition: .4s ease-in-out;
+    background-color: #252525;
+    color: white;
+}
+  
+.start:hover {
+    background-color: white;
+    color: black;
+}

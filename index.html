@@ -11,11 +11,57 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" type="text/css" href="#"/>
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  <style>
+    body {
+      background-image: url("img/transformice.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+  </style>
 </head>
 <body>
-    <canvas width="640" height="640" style="border: solid;">
-    <script src="js/script.js"></script>
-
+  <div id="container" class="container">
+    <div class="box">
+      <canvas id="myCanvas" width="640" height="640" style="border: solid;">
+      <script src="js/script.js"></script>
+    </div>
+    <div class="box">
+      <br><br><br><br><br><br><br><br><br><br>
+      <div class="form">
+          <p id="heading">MOUSE MAZE</p>
+          <!-- EM BREVE
+          <div>
+            <div class="countdown">
+              <div class="container-minute">
+                <h3 class="minute">3</h3>
+                <h3>Minute</h3>
+              </div>
+              <div class="container-second">
+                <h3 class="second">0</h3>
+                <h3>Second</h3>
+              </div>
+              <div class="container-second">
+                <h3 class="millisecod">0</h3>
+                <h3>Millisecond</h3>
+              </div>
+            </div>
+          </div>
+          -->
+          <div class="field">
+            Score:
+          </div>
+          <div class="field">
+              Dificuldade: 0
+          </div>
+           <!-- EM BREVE
+          <div class="btn">
+            <button class="button1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+            <button class="button2">Resetar</button>
+          </div> -->
+          <button type="button" class="start" id="startGame" onclick="iniciarJogo()">COMEÇAR</button>
+        </div>
+    </div>
+  </div>
 </body>
 </html>
