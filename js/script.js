@@ -4,14 +4,96 @@ function iniciarJogo(){
 }
 
 var score = 0;
+var dificuldade = 0;
+var dimensao = 0;
+
+var maze = [];
+
+function labirintoLevelUm(){
+    maze = [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1],
+        [1,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1],
+        [1,0,0,1,1,0,0,1,1,1,1,0,0,1,1,1,1,0,0,1],
+        [1,0,0,1,1,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1],
+        [1,0,0,1,1,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1],
+        [1,0,0,1,1,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1],
+        [1,0,0,1,1,0,0,1,0,0,0,0,0,1,1,0,0,0,0,1],
+        [1,0,0,1,1,0,0,1,0,0,1,0,0,1,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,0,1],
+        [1,0,0,0,0,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1],
+        [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+        [1,0,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+
+    return maze;
+}
+
+function labirintoLevelDois(){
+    maze = [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,1,1,1,0,1,0,0,0,0,0,0,1,1,0,0,0,0,1],
+        [1,0,0,1,1,0,0,0,1,0,0,0,0,1,1,0,0,1,0,1],
+        [1,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,0,1,0,1],
+        [1,0,0,1,1,0,0,1,1,1,1,0,0,0,0,1,0,1,0,1],
+        [1,1,0,1,1,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,1,0,1],
+        [1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,0,1,0,1],
+        [1,0,0,1,1,0,0,1,0,0,1,0,0,1,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,0,1,1],
+        [1,0,0,0,0,1,0,1,1,1,1,0,0,0,0,1,1,0,0,1],
+        [1,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1],
+        [1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1],
+        [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1],
+        [1,0,0,1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+    return maze;
+}
+
+function labirintoLevelTres(){
+    maze = [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,1],
+        [1,0,1,1,1,0,1,0,1,0,0,0,1,0,1,0,0,1,0,1],
+        [1,0,0,0,0,0,1,0,1,1,1,0,1,0,1,1,0,1,0,1],
+        [1,1,1,1,1,0,1,0,1,1,1,0,1,0,0,1,0,1,0,1],
+        [1,0,0,0,1,0,1,0,1,1,1,0,1,1,0,1,0,1,0,1],
+        [1,0,0,0,1,0,0,1,0,0,0,0,1,1,0,1,0,1,0,1],
+        [1,0,1,0,0,0,0,1,0,1,0,1,0,1,0,0,0,1,0,1],
+        [1,0,1,1,1,0,0,0,0,1,0,1,0,1,1,1,1,0,0,1],
+        [1,0,1,0,0,0,0,1,0,1,0,1,0,0,0,1,1,0,1,1],
+        [1,0,0,0,1,1,0,1,1,1,0,1,0,0,0,1,1,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1],
+        [1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,1],
+        [1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1],
+        [1,0,0,1,0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1],
+        [1,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,1],
+        [1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,1,1,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    ];
+    return maze;
+}
+
 
 // Executada automaticamente e mantém tdas as var locais (evita conflito de memória)
 (function(){
     // Ativar movimento das teclas
     var cnv = document.querySelector("canvas");
     var ctx = cnv.getContext("2d");
-
-    cnv.setA
 
     // variaveis para limpar a tela
     var WIDTH = cnv.width, HEIGHT = cnv.height;
@@ -21,7 +103,7 @@ var score = 0;
     var mvLeft = mvUp = mvRight = mvDown = false; // variáveis referentes a movi com valores booleanos
 
     // variavel para definir o tamanho dos blocos
-    var tileSize = 94; // 32px
+    var tileSize = 96;
     var tileSrcSize = 162; // dimensoes de captura da imagem
 
     var img = new Image(); // instancia de um obj imagem atribuindo o arquivo de origem
@@ -47,13 +129,10 @@ var score = 0;
     var lastZeroRow = -1; // linha com o último zero encontrado (é reutilizado dentro da função de renderização)
     var lastZeroCol = -1; // coluna com o último zero encontrado (esse aq tb é)
 
-    // array com as paredes
-    var walls = [];
-
     // variaveis do player
     var player = {
-        x: tileSize - 10, // 2px para ter uma distância
-        y: tileSize - 10 ,
+        x: (tileSize + dimensao) - 10, // 2px para ter uma distância
+        y: (tileSize + dimensao) - 10 ,
         width: 72, // largura de 28px
         height: 55,
         speed: 5, // velocidade do boneco
@@ -65,57 +144,36 @@ var score = 0;
 
     // teremos um array com varios arrays, ou seja, um array de múltiplas dimensões (neste caso, 20x20)
     // deixar um lembrete aqui pra eu mudar o array aleatoriamente
-    var maze = [
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-		[1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
-		[1,1,1,0,1,1,1,0,0,1,0,0,0,1,0,0,0,0,0,1],
-		[1,0,0,0,0,0,1,0,1,1,1,1,1,1,0,1,1,1,1,1],
-		[1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,1,1,0,1],
-		[1,0,0,0,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,1],
-		[1,0,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
-		[1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1],
-		[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,0,0,1,0,0,1,1,1,0,1,1,1,1,1,0,1,1,1,1],
-		[1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1],
-		[1,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1],
-		[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-    ];
+    maze = labirintoLevelUm();
 
-    var tocaPosition = {
-        row: 1,
-        col: 1
-    };
+    // array com as paredes
+    var walls = [];
+    var T_WIDTH = maze[0].length * (tileSize + dimensao), // retorna o numero de colunas do labirinto * o tamanho da célula
+        T_HEIGHT = maze.length * (tileSize + dimensao);
     
-    var cheesePosition = {
-        row: 18,
-        col: 18
-    };
-
-    var T_WIDTH = maze[0].length * tileSize, // retorna o numero de colunas do labirinto * o tamanho da célul
-        T_HEIGHT = maze.length * tileSize;
+    function redefinirCenario(){
+        walls = [];
+        T_WIDTH = maze[0].length * (tileSize + dimensao), // retorna o numero de colunas do labirinto * o tamanho da célul
+        T_HEIGHT = maze.length * (tileSize + dimensao);
     
-    for(var row in maze){ // p/ cada linha ↴
-        for(var col in maze[row]){  // pegar os índices da coluna
-            var tile = maze[row][col];
-            if(tile === 1){
-                var wall = { // declarar que vai ser um objeto com atributos
-                    x: tileSize * col, // tamanho dos bloquinhos * coluna
-                    y: tileSize * row,
-                    width: tileSize, // altura e largura vai ser do tamanho da célula
-                    height: tileSize 
-                };
-                // inserção do objeto no array de muros
-                walls.push(wall);
+        for(var row in maze){ // p/ cada linha ↴
+            for(var col in maze[row]){  // pegar os índices da coluna
+                var tile = maze[row][col];
+                if(tile === 1){
+                    var wall = { // declarar que vai ser um objeto com atributos
+                        x: (tileSize + dimensao) * col, // tamanho dos bloquinhos * coluna
+                        y: (tileSize + dimensao) * row,
+                        width: (tileSize + dimensao), // altura e largura vai ser do tamanho da célula
+                        height: (tileSize + dimensao) 
+                    };
+                    // inserção do objeto no array de muros
+                    walls.push(wall);
+                }
             }
         }
     }
+    
+    redefinirCenario();
 
     var cam = {
         x: 0,
@@ -263,29 +321,29 @@ var score = 0;
 
     //var firstZeroFound = false; // variável para controlar se o primeiro zero foi encontrado
     function render(){ // fun para desenhar os elementos na tela
-        ctx.clearRect(0, 0, WIDTH, HEIGHT) // limpa a tela nas coordenadas 0 e 0, até a altura e largura total do canvas
+        ctx.clearRect(0, 0, WIDTH, HEIGHT); // limpa a tela nas coordenadas 0 e 0, até a altura e largura total do canvas
         ctx.save(); // pego o contexto deste ponto e salvo na memória
         ctx.translate(-cam.x, -cam.y); // ajusta a camera co, os padroes definidos
         firstZeroFound = false; // redefinir a variável antes do loop externo começar
         lastZeroRow = -1;
         lastZeroCol = -1;
 
-        var playerRow = Math.floor(player.y / tileSize);
-        var playerCol = Math.floor(player.x / tileSize);
+        var playerRow = Math.floor(player.y / (tileSize + dimensao));
+        var playerCol = Math.floor(player.x / (tileSize + dimensao));
         for(var row in maze){ // p/ cada linha ↴
             for(var col in maze[row]){  // pegar os índices da coluna
                 var tile = maze[row][col];
-                var x = col * tileSize; // recebe o valor da col multiplicado por algum valor especifico, (neste caso, 32px) para assim desenhar um gráfico na tela
-                var y = row * tileSize; // eixo vertical da matriz
+                var x = col * (tileSize + dimensao); // recebe o valor da col multiplicado por algum valor especifico, (neste caso, 32px) para assim desenhar um gráfico na tela
+                var y = row * (tileSize + dimensao); // eixo vertical da matriz
                 ctx.drawImage(
                     player.carryingCheese ? imgWithCheese : img,
                     tile * tileSrcSize, 0, tileSrcSize, tileSrcSize, // se for chao 0, se for parede 96
-                    x, y, tileSize, tileSize
+                    x, y, (tileSize + dimensao), (tileSize + dimensao)
                 );
                 // encontra o último zero na matriz
                 if (tile === 0) {
                     if (!firstZeroFound) {
-                    ctx.drawImage(tocaImg, x, y, tileSize, tileSize);
+                    ctx.drawImage(tocaImg, x, y, (tileSize + dimensao), (tileSize + dimensao));
                     firstZeroFound = true;
                     } else {
                     lastZeroRow = row;
@@ -296,9 +354,9 @@ var score = 0;
         }
         // desenha o queijo na posição encontrada (penultimo array dos 20 e no ultimo 0 encontrado)
         if (lastZeroRow !== -1 && lastZeroCol !== -1) {
-            var x = lastZeroCol * tileSize;
-            var y = lastZeroRow * tileSize;
-            ctx.drawImage(cheeseImg, x, y, tileSize, tileSize);
+            var x = lastZeroCol * (tileSize + dimensao);
+            var y = lastZeroRow * (tileSize + dimensao);
+            ctx.drawImage(cheeseImg, x, y, (tileSize + dimensao), (tileSize + dimensao));
         }
         ctx.drawImage(
             player.carryingCheese ? imgWithCheese : img,
@@ -311,9 +369,30 @@ var score = 0;
         }
         if (playerRow === 1 && playerCol === 1) {
             if (player.carryingCheese) {
-                score += 100;
-                alert("Parabéns, você venceu!");
                 player.carryingCheese = false;
+                dificuldade += 1;
+                if (dimensao < 165){
+                    dimensao += 32;
+                }
+                if (dificuldade === 0){
+                    maze = labirintoLevelUm();
+                } else if (dificuldade === 1){
+                    maze = labirintoLevelDois();
+                } else {
+                    maze = labirintoLevelTres();
+                }
+                redefinirCenario();
+
+                ctx.drawImage(
+                    player.carryingCheese ? imgWithCheese : img,
+                    tile * tileSrcSize, 0, tileSrcSize, tileSrcSize, // se for chao 0, se for parede 96
+                    x, y, (tileSize + dimensao) + dimensao, (tileSize + dimensao) + dimensao
+                );
+                score += 10 * dificuldade;
+                document.getElementById("score").innerHTML='Score: ' + score;
+                document.getElementById("level").innerHTML='Dificuldade: ' + dificuldade;
+                return;
+                //jogoIniciado = false;
             } else {
                 console.log("Você precisa pegar o queijo antes de voltar para a toca.");
             }
